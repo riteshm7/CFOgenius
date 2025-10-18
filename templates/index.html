@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CFOgenius — Business Advisor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Optional: Google Font for a cleaner look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <!-- Top gradient header -->
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">⚡</div>
+        <h1>CFOgenius</h1>
+      </div>
+      <p class="tagline">Actionable business advice from SEC filings or your uploaded reports.</p>
+    </div>
+    <div class="header-glow"></div>
+  </header>
+
+  <main class="wrap">
+    <!-- Info stripe -->
+    <div class="notice">
+      <span class="badge">New</span>
+      Upload a PDF/DOCX/TXT report or search the SEC dataset. The AI will generate prioritized, CFO-style recommendations.
+    </div>
+
+    <!-- Two-column layout -->
+    <section class="grid">
+      <!-- Left: SEC dataset search -->
+      <div class="card card--accent">
+        <h2>Analyze from SEC Dataset</h2>
+        <p class="muted">Search by company, ticker, or a topic (e.g., <em>Apple</em>, <em>AAPL</em>, <em>supply chain</em>).</p>
+
+        <form method="POST" class="form form--row">
+          <input
+            type="text"
+            name="input_value"
+            placeholder="Try: Apple • AAPL • margin • AI strategy"
+            required
+            aria-label="Search SEC dataset"
+          />
+          <button type="submit" class="btn btn--primary">Analyze</button>
+        </form>
+
+        {% if error %}
+          <div class="alert alert--error">{{ error }}</div>
+        {% endif %}
+
+        {% if result %}
+          <div class="output">
+            <div class="output__header">
+              <span class="chip chip--dataset">Dataset</span>
+              <h3>Advisory Plan</h3>
+            </div>
+            <pre class="result">{{ result }}</pre>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Right: Upload -->
+      <div class="card card--highlight">
+        <h2>Analyze Your Uploaded Report</h2>
+        <p class="muted">Drop a business report and get a prioritized plan: quick wins, medium-term, long-term.</p>
+
+        <form method="POST" enctype="multipart/form-data" class="form form--stack">
+          <label class="file">
+            <input type="file" name="report_file" accept=".pdf,.docx,.txt" required />
+            <span class="file__button">Choose File</span>
+            <span class="file__hint">PDF, DOCX, or TXT — up to 25MB</span>
+          </label>
+          <button type="submit" class="btn btn--gradient">Upload & Analyze</button>
+        </form>
+
+        {% if upload_error %}
+          <div class="alert alert--error">{{ upload_error }}</div>
+        {% endif %}
+
+        {% if upload_result %}
+          <div class="output">
+            <div class="output__header">
+              <span class="chip chip--upload">Uploaded</span>
+              <h3>Advisory Plan</h3>
+            </div>
+            <pre class="result">{{ upload_result }}</pre>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Tips -->
+    <section class="tips">
+      <div class="tip">
+        <h4>💡 Tips</h4>
+        <ul>
+          <li>Try tickers if a company name doesn’t match (e.g., <strong>GOOGL</strong>, <strong>AMZN</strong>, <strong>PFE</strong>).</li>
+          <li>For PDFs that are scans, convert to text or upload DOCX/TXT for best results.</li>
+          <li>Use clear topics: <em>pricing power</em>, <em>supply chain risk</em>, <em>gross margin</em>, <em>working capital</em>.</li>
+        </ul>
+      </div>
+      <div class="tip">
+        <h4>🔒 Privacy</h4>
+        <p>Files are processed locally by your app and sent to the AI only for generating the advisory output.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>© {{ 2025 }} CFOgenius — For educational use only. Not investment advice.</p>
+    </div>
+  </footer>
+</body>
+</html>
