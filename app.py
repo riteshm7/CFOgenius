@@ -346,4 +346,7 @@ def health():
     return {"ok": True, "sentences": len(TRAIN_SENTENCES)}, 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    # Bind to all interfaces and the port Render provides
+    app.run(host="0.0.0.0", port=port, debug=False)
